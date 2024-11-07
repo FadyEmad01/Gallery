@@ -75,6 +75,35 @@ interface UserResponse {
   success: boolean;
 }
 
+
+
+// get board by id api interface 
+interface Board_GetBoardById {
+  Board_id: string;
+  name: string;
+  author_id: string;
+  image_url: string;
+  description: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+  author: Author_GetBoardById; // Including author details in the board
+}
+
+interface Author_GetBoardById {
+  name: string;
+  email: string;
+  profile_picture: string | null;
+  boards: Board_GetBoardById[]; // Author has an array of boards
+}
+
+interface BoardResponse_GetBoardById {
+  message: string;
+  board: Board_GetBoardById | null; // Single board or null
+  success: boolean;
+}
+// end get board by id api interface
+
 export async function fetchProfile(): Promise<UserResponse> {
   const token = getToken(); // Retrieve the token from cookies
   const response = await fetch("https://gallerista-app.vercel.app/api/V0/user/profile", {
@@ -129,7 +158,7 @@ export async function login(data: LoginData): Promise<ApiResponse> {
   const token = responseData.token; // Adjust this according to your API response structure
   if (token) {
     // Set the token in a cookie
-    document.cookie = `auth_token=${token}; path=/; max-age=${60 * 60}; secure; SameSite=Strict`;
+    document.cookie = `auth_token=${token}; path=/; max-age=${60 * 60 * 24}; secure; SameSite=Strict`;
   }
 
 
@@ -210,13 +239,13 @@ export async function postBoard(data: FormData): Promise<ApiResponse> {
       "x-api-key": API_KEY,
       'Authorization': `${token}`,
     },
-    body: data 
+    body: data
   });
 
   if (!response.ok) {
     // Handle HTTP errors
     const errorData = await response.json();
-    return { success: false, data: null, message: errorData.message }; // Ensure data is null
+    return { success: false, data: null, message: errorData.error }; // Ensure data is null
   }
 
   const responseData = await response.json();
@@ -226,4 +255,63 @@ export async function postBoard(data: FormData): Promise<ApiResponse> {
 
   // Return the parsed response as ApiResponse
   // return await response.json();
+}
+
+
+export async function fetchUserById(id: string): Promise<UserResponse> {
+  const token = getToken();
+  const response = await fetch(`https://gallerista-app.vercel.app/api/V0/user/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${token}`,
+      'x-api-key': API_KEY,
+    },
+    cache: 'no-cache'
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return {
+      success: false,
+      user: null,
+      message: errorData.message || 'Failed to fetch user data',
+    };
+  }
+
+  const responseData = await response.json();
+  return {
+    success: true,
+    user: responseData.user,
+    message: 'User retrieved successfully',
+  };
+}
+
+export async function fetchBoardById(id: string): Promise<BoardResponse_GetBoardById> {
+  const token = getToken();
+  const response = await fetch(`https://gallerista-app.vercel.app/api/V0/board/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${token}`,
+      'x-api-key': API_KEY,
+    },
+    cache: 'no-cache'
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return {
+      success: false,
+      board: null,
+      message: errorData.message || 'Failed to fetch board data',
+    };
+  }
+
+  const responseData = await response.json();
+  return {
+    success: true,
+    board: responseData.board,
+    message: 'Board retrieved successfully',
+  };
 }

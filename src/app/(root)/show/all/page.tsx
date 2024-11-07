@@ -147,8 +147,8 @@ export default function Home() {
                   data.author.profile_picture || "/avatarPlaceholder.jpg"
                 }
                 userName={data.author.name}
-                postHref={`/posts/${data.Board_id}`}
-                userHref={`/users/${data.author.user_id}`}
+                postHref={`/post/${data.Board_id}`}
+                userHref={`/user/${data.author.user_id}`}
               />
             ))}
           </div>

@@ -39,7 +39,7 @@ const formSchema = z.object({
   boardImageInput: z.string(),
   BoardName: z.string().min(2),
   boardDescription: z.string().min(2),
-  boardPrice: z.string().min(1).max(4),
+  boardPrice: z.string().min(1).max(5),
 });
 interface user {
   user_id: string;
@@ -78,9 +78,9 @@ export default function CreateBoardPage() {
   }, []);
 
   const dropZoneConfig = {
-    maxFiles: 5,
+    maxFiles: 1,
     maxSize: 1024 * 1024 * 4,
-    multiple: true,
+    multiple: false,
   };
 
   function handleFileChange(newFiles: File[] | null) {
