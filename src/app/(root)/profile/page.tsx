@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
 // import { userData } from "@/Data/user";
 import { useToast } from "@/hooks/use-toast";
-import { fetchProfile } from "@/lib/api";
+import { fetchProfile, getSavedBoards } from "@/lib/api";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -43,88 +43,46 @@ export default function Page() {
   const [tabs, setTabs] = useState("saved");
   const [loading, setLoading] = useState(true); // Loading state
   // const [error, setError] = useState<string | null>(null); // Error handling
+  const [savedBoards, setSavedBoards] = useState<Board[]>([]); // Saved boards data
   const { toast } = useToast();
 
+  // Fetch user profile and saved boards
   useEffect(() => {
-    const getProfile = async () => {
-      const response = await fetchProfile();
-      if (response.success) {
-        setUser(response.user); // Set user data from API
-      } else {
-        // setError(response.message); // Set error message
-        console.log("Profile error: " + response.message);
+    const fetchData = async () => {
+      try {
+        // Step 1: Fetch user profile
+        const profileResponse = await fetchProfile();
+        if (profileResponse.success) {
+          setUser(profileResponse.user); // Set user data from API
+        } else {
+          console.log("Profile error: " + profileResponse.message);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description:
+              "An unexpected error occurred. " + profileResponse.message,
+          });
+        }
+
+        // Step 2: Fetch saved boards only if the "Saved" tab is active and user data exists
+        if (profileResponse.success && tabs === "saved") {
+          const savedBoardsResponse = await getSavedBoards();
+          setSavedBoards(savedBoardsResponse);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "An unexpected error occurred." + response.message,
+          description: "Failed to load data. Please try again later.",
         });
+      } finally {
+        setLoading(false); // Set loading to false
       }
-      setLoading(false); // Set loading to false
     };
 
-    getProfile();
-  }, []);
-
-  // const fakeData = [{}];
-  // const fakeData = [
-  //   {
-  //     userImage:
-  //       "https://i.pinimg.com/236x/00/a0/1a/00a01abd46e8dd504135af47ca59a2b5.jpg",
-  //     userName: "John Doe",
-  //     title: "Sample Title 1",
-  //     image:
-  //       "https://i.pinimg.com/236x/00/a0/1a/00a01abd46e8dd504135af47ca59a2b5.jpg", // 3:2 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Jane Smith",
-  //     title: "Sample Title 2",
-  //     image:
-  //       "https://i.pinimg.com/236x/5b/5f/d3/5b5fd370e8d91874668cda9127f07a0a.jpg", // 4:3 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Alice Johnson",
-  //     title: "Sample Title 3",
-  //     image:
-  //       "https://i.pinimg.com/originals/91/e0/17/91e017c2852c68768318ecf09da54614.gif", // 1:1 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Bob Brown",
-  //     title: "Sample Title 4",
-  //     image:
-  //       "https://i.pinimg.com/236x/d6/44/f4/d644f4394ec89d85d7316f4548e80ef3.jpg", // 3:2 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Charlie Black",
-  //     title: "Sample Title 5",
-  //     image:
-  //       "https://i.pinimg.com/236x/1d/85/fa/1d85fac0d5ae309a165e1eafaebd0ab8.jpg", // 1:2 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Charlie Black",
-  //     title: "Sample Title 5",
-  //     image:
-  //       "https://i.pinimg.com/236x/98/24/97/9824978694d68c09fd6b9e813ff39e5e.jpg", // 1:2 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Charlie Black",
-  //     title: "Sample Title 5",
-  //     image:
-  //       "https://i.pinimg.com/236x/16/c7/82/16c782a6ca94390ffc57a6453670bc5d.jpg", // 1:2 ratio
-  //   },
-  //   {
-  //     userImage: "https://via.placeholder.com/100x100",
-  //     userName: "Charlie Black",
-  //     title: "Sample Title 5",
-  //     image:
-  //       "https://i.pinimg.com/236x/59/92/02/5992021ac3b1cbc69d22f5c126deaee1.jpg", // 1:2 ratio
-  //   },
-  // ];
+    fetchData();
+  }, [tabs]);
 
   return (
     <>
@@ -194,37 +152,43 @@ export default function Page() {
 
       <Container>
         {tabs === "saved" ? (
-          // fakeData && fakeData.length > 0 ? (
-          //   <>
-          //     <p className="text-xl mb-4 font-semibold">Saved Posts</p>
-          //     <div className="masonry mb-9">
-          //       {fakeData.map((data, index) => (
-          //         <MasonryCard
-          //           image={data.image}
-          //           title={data.title}
-          //           userImage={data.userImage}
-          //           userName={data.userName}
-          //           key={index}
-          //         />
-          //       ))}
-          //     </div>
-          //   </>
-          // ) :
-          <div className="mt-14 w-full flex flex-col justify-center items-center">
-            <p className="text-sm mb-4 text-center">
-              Nothing to show...yet! Browse us and save some.
-            </p>
-            <Link
-              href="/show/all"
-              className={buttonVariants({
-                variant: "default",
+          savedBoards && savedBoards.length > 0 ? (
+            <>
+              <p className="text-xl mb-4 font-semibold">Saved Posts</p>
+              <div className="masonry mb-9">
+                {savedBoards
+                  .slice()
+                  .reverse()
+                  .map((board) => (
+                    <MasonryCard
+                      key={board.Board_id}
+                      image={board.image_url}
+                      title={board.name}
+                      showUser={true}
+                      postHref={`/post/${board.Board_id}`}
+                      // userImage={board.} // Adjust this if necessary
+                      // userName={board.author_name} // Adjust this if necessary
+                    />
+                  ))}
+              </div>
+            </>
+          ) : (
+            <div className="mt-14 w-full flex flex-col justify-center items-center">
+              <p className="text-sm mb-4 text-center">
+                Nothing to show...yet! Browse us and save some.
+              </p>
+              <Link
+                href="/show/all"
+                className={buttonVariants({
+                  variant: "default",
 
-                className: "flex items-center gap-1 ",
-              })}
-            >
-              Browse us
-            </Link>
-          </div>
+                  className: "flex items-center gap-1 ",
+                })}
+              >
+                Browse us
+              </Link>
+            </div>
+          )
         ) : null}
         {tabs === "created" ? (
           user && user.boards && user.boards.length > 0 ? (
@@ -238,7 +202,7 @@ export default function Page() {
                     className: "flex items-center gap-1 ",
                   })}
                 >
-                  Add new 
+                  Add new
                   <Plus />
                 </Link>
               </div>
@@ -248,6 +212,7 @@ export default function Page() {
                   .reverse()
                   .map((data: createdPostMasonry) => (
                     <MasonryCard
+                      showUser={false}
                       image={data.image_url}
                       title={data.name}
                       userImage={

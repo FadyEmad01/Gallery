@@ -19,7 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { fetchProfile } from "@/lib/api";
+import { fetchProfile, logout } from "@/lib/api";
 
 interface NavbarProps {
   className?: string;
@@ -46,6 +46,7 @@ interface Board {
 export const Navbar = (props: NavbarProps) => {
   const [user, setUser] = useState<user | null>(null); // State for user profile
   const { toast } = useToast();
+  // const [open, setOpen] = useState(true); // Assume this controls the AlertDialog open state
 
   useEffect(() => {
     const getProfile = async () => {
@@ -66,6 +67,13 @@ export const Navbar = (props: NavbarProps) => {
 
     getProfile();
   }, []);
+
+  const handleLogout = () => {
+    logout(); // Your logout function
+    // setOpen(false); // Close the dialog
+    // router.push("/"); // Redirect to the home page
+    window.location.href = "/"; // Navigate and refresh
+  };
 
   return (
     <>
@@ -108,10 +116,8 @@ export const Navbar = (props: NavbarProps) => {
                         <AlertDialogCancel className="">
                           Cancel
                         </AlertDialogCancel>
-                        <AlertDialogAction>
-                          <Link href="/api/auth/logout" className="">
-                            Continue
-                          </Link>
+                        <AlertDialogAction onClick={handleLogout} asChild>
+                          <button className="dialog-button">Continue</button>
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>

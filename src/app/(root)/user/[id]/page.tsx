@@ -3,7 +3,7 @@ import { Container } from "@/components/Container";
 import { MasonryCard } from "@/components/MasonryCard";
 // import { Navbar } from "@/components/Navbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button, } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -45,8 +45,6 @@ export default function Page({ params }: PageProps) {
   const userId = id; // Explicitly convert id to a number
   // const user = userData.find((user) => user.id === userId); // Find the user by id
 
-
-
   const [tabs, setTabs] = useState("created");
   const [user, setUser] = useState<user | null>(null); // State for user profile
   const [loading, setLoading] = useState(true); // Loading state
@@ -72,7 +70,6 @@ export default function Page({ params }: PageProps) {
     getUser();
   }, []);
 
-
   return (
     <>
       <Container>
@@ -91,17 +88,15 @@ export default function Page({ params }: PageProps) {
             {/* <AvatarFallback>{userName}</AvatarFallback> */}
           </Avatar>
           {loading ? (
-              <Skeleton className="w-36 h-8 rounded-lg bg-zinc-200" />
-            ) : (
-              <h1 className="text-4xl font-semibold">{user?.name}</h1>
-            )}
-            {loading ? (
-              <Skeleton className="w-44 h-4 rounded-sm bg-zinc-200" />
-            ) : (
-              <p className="text-sm font-semibold text-gray-400">
-                {user?.email}
-              </p>
-            )}
+            <Skeleton className="w-36 h-8 rounded-lg bg-zinc-200" />
+          ) : (
+            <h1 className="text-4xl font-semibold">{user?.name}</h1>
+          )}
+          {loading ? (
+            <Skeleton className="w-44 h-4 rounded-sm bg-zinc-200" />
+          ) : (
+            <p className="text-sm font-semibold text-gray-400">{user?.email}</p>
+          )}
           {/* <Button className="mt-4" variant={"secondary"}>
             Edit Profile
           </Button> */}
@@ -125,9 +120,7 @@ export default function Page({ params }: PageProps) {
       </Container>
 
       <Container>
-        {tabs === "saved" ? (
-         null
-        ) : null}
+        {tabs === "saved" ? null : null}
         {tabs === "created" ? (
           user && user.boards && user.boards.length > 0 ? (
             <>
@@ -138,6 +131,7 @@ export default function Page({ params }: PageProps) {
                   .reverse()
                   .map((data: createdPostMasonry) => (
                     <MasonryCard
+                      showUser={false}
                       image={data.image_url}
                       title={data.name}
                       userImage={

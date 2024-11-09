@@ -141,6 +141,7 @@ export default function Home() {
             {posts.map((data) => (
               <MasonryCard
                 key={data.Board_id}
+                showUser={true}
                 image={data.image_url}
                 title={data.description}
                 userImage={

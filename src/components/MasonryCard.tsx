@@ -7,9 +7,11 @@ interface MansoryProps {
   image: string;
   postHref?: string;
   userHref?: string;
+  showUser: boolean;
 }
 
 export const MasonryCard = (props: MansoryProps) => {
+
   return (
     <div className="flex flex-col gap-1 bg-transparent w-full">
       <Link href={props.postHref ?? ''}>
@@ -22,7 +24,7 @@ export const MasonryCard = (props: MansoryProps) => {
           <h5 className="text-sm">{props.title}</h5>
         </div>
       </Link>
-
+      {props.showUser && (
       <div className="flex items-center justify-between">
         <Link href={props.userHref ?? ''}>
           <div className="flex items-center gap-2">
@@ -35,6 +37,7 @@ export const MasonryCard = (props: MansoryProps) => {
           </div>
         </Link>
       </div>
+      )}
     </div>
   );
 };

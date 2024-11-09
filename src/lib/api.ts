@@ -104,6 +104,28 @@ interface BoardResponse_GetBoardById {
 }
 // end get board by id api interface
 
+// save api 
+interface SaveBoardResponse {
+  message: string;
+  save: {
+    user_id: string;
+    board_id: string;
+  };
+  success?: boolean;
+}
+// end save api 
+
+interface SavedBoard {
+  Board_id: string;
+  name: string;
+  author_id: string;
+  image_url: string;
+  description: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export async function fetchProfile(): Promise<UserResponse> {
   const token = getToken(); // Retrieve the token from cookies
   const response = await fetch("https://gallerista-app.vercel.app/api/V0/user/profile", {
@@ -313,5 +335,107 @@ export async function fetchBoardById(id: string): Promise<BoardResponse_GetBoard
     success: true,
     board: responseData.board,
     message: 'Board retrieved successfully',
+  };
+}
+
+export function logout() {
+  document.cookie = `auth_token=; path=/; max-age=0; secure; SameSite=Strict`;
+}
+
+export async function saveBoardById(id: string): Promise<SaveBoardResponse> {
+  const token = getToken();
+
+  // if (!token) {
+  //   return {
+  //     message: 'Authorization token is missing',
+  //     save: { user_id: '', board_id: '' },
+  //     success: false,
+  //   };
+  // }
+
+  const response = await fetch(`https://gallerista-app.vercel.app/api/V0/saveBoard/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${token}`,
+      'x-api-key': API_KEY,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return {
+      message: errorData.message || 'Failed to save board',
+      save: { user_id: '', board_id: '' },
+      success: false,
+    };
+  }
+
+  const responseData = await response.json();
+  return {
+    message: responseData.message,
+    save: responseData.save,
+    success: true,
+  };
+}
+
+
+// Function to get all saved boards for the authenticated user
+export async function getSavedBoards(): Promise<SavedBoard[]> {
+  const token = getToken(); // Ensure you get the user's token here.
+
+  try {
+    const response = await fetch('https://gallerista-app.vercel.app/api/V0/saveBoard', {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}`,
+        'x-api-key': API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error fetching saved boards:", errorData);
+      return []; // Return an empty array if there's an error
+    }
+
+    const data = await response.json();
+
+    // Return savedBoards from the response
+    return data.saved_Boards; // Assuming the API response has 'saved_Boards'
+  } catch (error) {
+    console.error("Error during fetch:", error);
+    return []; // Return an empty array in case of a network error
+  }
+}
+
+
+export async function unsaveBoardById(boardId: string): Promise<SaveBoardResponse> {
+  const token = getToken(); // Ensure you get the user's token here.
+
+  const response = await fetch(`https://gallerista-app.vercel.app/api/V0/unSaveBoard/${boardId}`, {
+    method: 'DELETE', // HTTP method should be DELETE for unsaving/removing
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `${token}`,
+      'x-api-key': API_KEY,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Error unsaving board:", errorData);
+    return {
+      message: errorData.message || 'Failed to unsave board',
+      save: { user_id: '', board_id: '' },
+      success: false,
+    };
+  }
+
+  const responseData = await response.json();
+  return {
+    message: responseData.message,
+    save: responseData.save,
+    success: true,
   };
 }

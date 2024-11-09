@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
 
 interface PostCardProps {
+  children?: React.ReactNode;
   className?: string;
   Board_image?: string;
   Board_name?: string;
@@ -25,6 +26,7 @@ export const PostCard = (props: PostCardProps) => {
           alt={props.Board_name}
         />
         <div className="col-span-1 py-9 pe-5">
+          {props.children}
           <div className="flex">
             <div className="flex group items-center gap-2">
               <Link href={props.Author_Href ?? ""}>
@@ -67,7 +69,7 @@ export const PostCard = (props: PostCardProps) => {
               href={`https://wa.me/${props.Author_WhatsApp_Number}`}
               className="bg-[#25D366] hover:bg-[#22c05c]  text-white rounded-full p-2 flex justify-center items-center"
             >
-              <FaWhatsapp className="size-5"/>
+              <FaWhatsapp className="size-5" />
             </Link>
           </div>
         </div>
