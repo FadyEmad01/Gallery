@@ -245,7 +245,7 @@ export default function Page() {
                 Nothing to show...yet! Pins you create will live here.
               </p>
               <Link
-                href="/create/post"
+                href="/profile/create/post"
                 className={buttonVariants({
                   variant: "default",
 
