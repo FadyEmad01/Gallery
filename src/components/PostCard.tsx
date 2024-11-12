@@ -53,7 +53,7 @@ export const PostCard = (props: PostCardProps) => {
           </div>
           <div className="w-full mt-3 relative">
             <img
-              className="object-cover w-full rounded-2xl h-auto object-cover"
+              className="object-cover w-full rounded-2xl h-auto"
               src={props.Board_image}
               alt={props.Board_name}
             />
