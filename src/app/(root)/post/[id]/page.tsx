@@ -1,8 +1,9 @@
 "use client";
 import { Container } from "@/components/Container";
+import { MasonryCard } from "@/components/MasonryCard";
 // import { MasonryCard } from "@/components/MasonryCard";
 import { PostCard } from "@/components/PostCard";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 // import { Navbar } from "@/components/Navbar";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import {
   fetchBoardById,
+  getAllPosts,
   getSavedBoards,
   saveBoardById,
   unsaveBoardById,
@@ -54,11 +56,25 @@ interface PageProps {
   };
 }
 
+interface PostData {
+  Board_id: string;
+  image_url: string;
+  description: string;
+  price: string;
+  author: {
+    user_id: string;
+    email: string;
+    name: string;
+    profile_picture: string | null;
+  };
+}
+
 export default function Page({ params }: PageProps) {
   const { id } = params;
   const BoardId = id; // Explicitly convert id to a number
   // const user = userData.find((user) => user.id === userId); // Find the user by id
 
+  const [posts, setPosts] = useState<PostData[]>([]);
   const [board, setBoard] = useState<board | null>(null); // State for user profile
   const [loading, setLoading] = useState(true); // Loading state
   const [isSaved, setIsSaved] = useState(false); // Track if the board is saved
@@ -87,7 +103,7 @@ export default function Page({ params }: PageProps) {
       let isBoardSaved = false; // Flag to track if the board is saved
       for (let i = 0; i < savedBoardsResponse.length; i++) {
         const element = savedBoardsResponse[i]; // Access each element in the savedBoards array
-        if (element.Board_id === BoardId) {
+        if (element.board_id === BoardId) {
           console.log("Board is saved");
           isBoardSaved = true; // If BoardId matches, set isBoardSaved to true
           break; // Exit the loop early once we find the match
@@ -95,7 +111,22 @@ export default function Page({ params }: PageProps) {
       }
       setIsSaved(isBoardSaved); // Update the isSaved state accordingly
     };
+    const fetchPosts = async () => {
+      const response = await getAllPosts();
+      if (response.success) {
+        setPosts(response.data?.boards || []); // Adjust according to the structure of `response.data`
+      } else {
+        // setError(response.message || "Failed to fetch posts");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An unexpected error occurred." + response.message,
+        });
+      }
+      setLoading(false); // Set loading to false
+    };
 
+    fetchPosts();
     getAllSavedBoards(); // Fetch saved boards
     getBoard();
   }, []);
@@ -159,29 +190,52 @@ export default function Page({ params }: PageProps) {
         <>
           <Container>
             <Toaster />
-            <PostCard
-              className="mx-auto my-9"
-              Board_image={board?.image_url}
-              Board_name={board?.name}
-              Board_description={board?.description}
-              Board_price={board?.price}
-              created_at={formattedDate}
-              updated_at={board?.updated_at}
-              Author_name={board?.author.name}
-              Author_profile_picture={
-                board?.author.profile_picture ?? "/avatarPlaceholder.jpg"
-              }
-            >
-              <Button
-                className={`mb-4 ${
-                  isSaved ? "bg-red-500" : "bg-myMedBlue"
-                } hover:bg-myBlueDark rounded-full`}
-                onClick={handleSaveToggle}
+            <div className="my-9 md:columns-2 columns-1 gap-x-4">
+              <PostCard
+                className="mx-auto mb-9"
+                Board_image={board?.image_url}
+                Board_name={board?.name}
+                Board_description={board?.description}
+                Board_price={board?.price}
+                created_at={formattedDate}
+                updated_at={board?.updated_at}
+                Author_name={board?.author.name}
+                Author_profile_picture={
+                  board?.author.profile_picture ?? "/avatarPlaceholder.jpg"
+                }
               >
-                {isSaved ? "Unsave" : "Save"}
-                <Bookmark className="" />
-              </Button>
-            </PostCard>
+                <button
+                  className={`${
+                    isSaved ? "" : ""
+                  } rounded-full p-2 bg-white shadow-md`}
+                  onClick={handleSaveToggle}
+                >
+                  {isSaved ? (
+                    <Bookmark className="text-myMedBlue fill-myLightBlue" />
+                  ) : (
+                    <Bookmark className="text-myMedBlue" />
+                  )}
+                  {/* <Bookmark className="" /> */}
+                </button>
+              </PostCard>
+              <div className="columns-2 gap-x-4">
+                {posts.map((data) => (
+                  <MasonryCard
+                    className="mb-4 inline-flex"
+                    key={data.Board_id}
+                    showUser={true}
+                    image={data.image_url}
+                    title={data.description}
+                    userImage={
+                      data.author.profile_picture || "/avatarPlaceholder.jpg"
+                    }
+                    userName={data.author.name}
+                    postHref={`/post/${data.Board_id}`}
+                    userHref={`/user/${data.author.user_id}`}
+                  />
+                ))}
+              </div>
+            </div>
           </Container>
 
           <Container>

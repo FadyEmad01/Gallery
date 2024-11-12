@@ -10,6 +10,9 @@ const config: Config = {
 	],
 	theme: {
     	extend: {
+			height: {
+				'fill-available': '-webkit-fill-available',
+			  },
     		colors: {
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',

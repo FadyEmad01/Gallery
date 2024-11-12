@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 interface MansoryProps {
@@ -8,14 +9,15 @@ interface MansoryProps {
   postHref?: string;
   userHref?: string;
   showUser: boolean;
+  className?: string;
 }
 
 export const MasonryCard = (props: MansoryProps) => {
 
   return (
-    <div className="flex flex-col gap-1 bg-transparent w-full">
+    <div className={cn("flex flex-col gap-1 bg-transparent w-full flex-nowrap", props.className)}>
       <Link href={props.postHref ?? ''}>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 flex-nowrap">
           <img
             className="w-full rounded-2xl object-cover"
             src={props.image}
@@ -25,7 +27,7 @@ export const MasonryCard = (props: MansoryProps) => {
         </div>
       </Link>
       {props.showUser && (
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-nowrap">
         <Link href={props.userHref ?? ''}>
           <div className="flex items-center gap-2">
             <img

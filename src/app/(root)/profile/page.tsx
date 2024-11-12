@@ -37,13 +37,27 @@ interface Board {
   price: string;
   created_at: string;
 }
+interface SavedBoard {
+  board_id: string;
+  name: string;
+  author: {
+    author_id: string,
+    name: string,
+    profile_picture: string
+  }
+  image_url: string;
+  description: string;
+  price: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export default function Page() {
   const [user, setUser] = useState<user | null>(null); // State for user profile
   const [tabs, setTabs] = useState("saved");
   const [loading, setLoading] = useState(true); // Loading state
   // const [error, setError] = useState<string | null>(null); // Error handling
-  const [savedBoards, setSavedBoards] = useState<Board[]>([]); // Saved boards data
+  const [savedBoards, setSavedBoards] = useState<SavedBoard[]>([]); // Saved boards data
   const { toast } = useToast();
 
   // Fetch user profile and saved boards
@@ -68,6 +82,7 @@ export default function Page() {
         if (profileResponse.success && tabs === "saved") {
           const savedBoardsResponse = await getSavedBoards();
           setSavedBoards(savedBoardsResponse);
+          
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -161,13 +176,13 @@ export default function Page() {
                   .reverse()
                   .map((board) => (
                     <MasonryCard
-                      key={board.Board_id}
+                      key={board.board_id}
                       image={board.image_url}
                       title={board.name}
                       showUser={true}
-                      postHref={`/post/${board.Board_id}`}
-                      // userImage={board.} // Adjust this if necessary
-                      // userName={board.author_name} // Adjust this if necessary
+                      postHref={`/post/${board.board_id}`}
+                      userImage={board.author.profile_picture} // Adjust this if necessary
+                      userName={board.author.name} // Adjust this if necessary
                     />
                   ))}
               </div>

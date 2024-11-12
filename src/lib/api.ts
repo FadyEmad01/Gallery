@@ -116,9 +116,13 @@ interface SaveBoardResponse {
 // end save api 
 
 interface SavedBoard {
-  Board_id: string;
+  board_id: string;
   name: string;
-  author_id: string;
+  author: {
+    author_id: string,
+    name: string,
+    profile_picture: string
+  }
   image_url: string;
   description: string;
   price: string;
@@ -402,7 +406,7 @@ export async function getSavedBoards(): Promise<SavedBoard[]> {
     const data = await response.json();
 
     // Return savedBoards from the response
-    return data.saved_Boards; // Assuming the API response has 'saved_Boards'
+    return data.saved_boards; // Assuming the API response has 'saved_Boards'
   } catch (error) {
     console.error("Error during fetch:", error);
     return []; // Return an empty array in case of a network error
