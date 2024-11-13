@@ -72,8 +72,9 @@ export default function Page({ params }: PageProps) {
 
   return (
     <>
+     <Toaster />
       <Container>
-        <Toaster />
+       
         <div className="flex flex-col gap-2 justify-center items-center my-9">
           <Avatar className="size-36">
             <AvatarImage
@@ -135,7 +136,7 @@ export default function Page({ params }: PageProps) {
                       image={data.image_url}
                       title={data.name}
                       userImage={
-                        user?.profile_picture ?? "/avatarPlaceholder.jpg"
+                        user?.profile_picture || "/avatarPlaceholder.jpg"
                       } // Replace with the correct field name if available
                       userName={user?.name}
                       key={data.Board_id}

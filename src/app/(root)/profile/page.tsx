@@ -10,7 +10,8 @@ import { Toaster } from "@/components/ui/toaster";
 // import { userData } from "@/Data/user";
 import { useToast } from "@/hooks/use-toast";
 import { fetchProfile, getSavedBoards } from "@/lib/api";
-import { Plus } from "lucide-react";
+import { Dialog } from "@headlessui/react";
+import { Plus, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -41,10 +42,10 @@ interface SavedBoard {
   board_id: string;
   name: string;
   author: {
-    author_id: string,
-    name: string,
-    profile_picture: string
-  }
+    author_id: string;
+    name: string;
+    profile_picture: string;
+  };
   image_url: string;
   description: string;
   price: string;
@@ -59,6 +60,8 @@ export default function Page() {
   // const [error, setError] = useState<string | null>(null); // Error handling
   const [savedBoards, setSavedBoards] = useState<SavedBoard[]>([]); // Saved boards data
   const { toast } = useToast();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   // Fetch user profile and saved boards
   useEffect(() => {
@@ -82,7 +85,6 @@ export default function Page() {
         if (profileResponse.success && tabs === "saved") {
           const savedBoardsResponse = await getSavedBoards();
           setSavedBoards(savedBoardsResponse);
-          
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -101,14 +103,15 @@ export default function Page() {
 
   return (
     <>
+      <Toaster />
       <Container>
-        <Toaster />
         <div className="flex flex-col gap-2 justify-center items-center my-9">
           <>
             <Avatar className="size-36">
               <AvatarImage
-                className="object-cover"
-                src={user?.profile_picture ?? "/avatarPlaceholder.jpg"}
+                onClick={() => setIsOpen(true)}
+                className="object-cover cursor-pointer"
+                src={user?.profile_picture || "/avatarPlaceholder.jpg"}
                 alt={user?.name + " image"}
                 title={user?.name + " image"}
               />
@@ -163,6 +166,34 @@ export default function Page() {
             </Button>
           </div>
         </div>
+        <Dialog
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
+          className="relative z-[100] w-[100vw] h-[100vh]"
+        >
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm"
+            aria-hidden="true"
+          />
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <Dialog.Panel className="max-w-xs">
+              <div className="w-full h-full max-w-md transform overflow-hidden align-middle transition-all">
+                <img
+                  src={user?.profile_picture || "/avatarPlaceholder.jpg"}
+                  alt={user?.name + " image"}
+                  title={user?.name + " image"}
+                  className="w-full h-fill-available object-contain rounded-3xl"
+                />
+              </div>
+            </Dialog.Panel>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-3 left-3 text-gray-950 bg-white rounded-full p-1 hover:bg-gray-200 transition-all"
+            >
+              <X />
+            </button>
+          </div>
+        </Dialog>
       </Container>
 
       <Container>
@@ -181,8 +212,11 @@ export default function Page() {
                       title={board.name}
                       showUser={true}
                       postHref={`/post/${board.board_id}`}
-                      userImage={board.author.profile_picture} // Adjust this if necessary
+                      userImage={
+                        board.author.profile_picture || "/avatarPlaceholder.jpg"
+                      } // Adjust this if necessary
                       userName={board.author.name} // Adjust this if necessary
+                      userHref={`/user/${board.author.author_id}`}
                     />
                   ))}
               </div>
@@ -208,7 +242,7 @@ export default function Page() {
         {tabs === "created" ? (
           user && user.boards && user.boards.length > 0 ? (
             <>
-              <div className="flex justify-between items-center w-full mb-2">
+              <div className="flex justify-between items-center w-full mb-4">
                 <p className="text-xl font-semibold">Created Post</p>
                 <Link
                   href="/profile/create/post"
@@ -231,7 +265,7 @@ export default function Page() {
                       image={data.image_url}
                       title={data.name}
                       userImage={
-                        user?.profile_picture ?? "/avatarPlaceholder.jpg"
+                        user?.profile_picture || "/avatarPlaceholder.jpg"
                       } // Replace with the correct field name if available
                       userName={user?.name}
                       key={data.Board_id}

@@ -4,6 +4,7 @@ import { MasonryCard } from "@/components/MasonryCard";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { getAllPosts } from "@/lib/api";
+import { log } from "console";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 // import { Navbar } from "@/components/Navbar";
@@ -12,6 +13,7 @@ interface PostData {
   Board_id: string;
   image_url: string;
   description: string;
+  name: string;
   price: string;
   author: {
     user_id: string;
@@ -132,8 +134,8 @@ export default function Home() {
   return (
     <>
       {/* <Navbar/> */}
+      <Toaster />
       <Container>
-        <Toaster />
         {loading ? (
           <LoaderCircle className="mx-auto animate-spin size-10 mt-9" />
         ) : (
@@ -143,7 +145,7 @@ export default function Home() {
                 key={data.Board_id}
                 showUser={true}
                 image={data.image_url}
-                title={data.description}
+                title={data.name}
                 userImage={
                   data.author.profile_picture || "/avatarPlaceholder.jpg"
                 }

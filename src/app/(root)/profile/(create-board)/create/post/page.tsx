@@ -98,9 +98,9 @@ export default function CreateBoardPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-//   const {
-//     formState: { isValid },
-//   } = form;
+  //   const {
+  //     formState: { isValid },
+  //   } = form;
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
@@ -126,7 +126,7 @@ export default function CreateBoardPage() {
           title: "Success",
           description: "Board created successfully.",
         });
-        router.push('/profile');
+        router.push("/profile");
       } else {
         setLoading(false);
         toast({
@@ -136,7 +136,6 @@ export default function CreateBoardPage() {
             "Failed to create board. Please try again." + response.message,
         });
       }
-
     } catch (error) {
       setLoading(false);
       console.error("Form submission error", error);
@@ -151,155 +150,157 @@ export default function CreateBoardPage() {
   }
 
   return (
-    <Container>
+    <>
       <Toaster />
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold">
-            Welcome{" "}
-            <span className="bg-gradient-to-r from-cyan-500 to-blue-500 text-transparent bg-clip-text">
-              {user?.name}
-            </span>{" "}
-            to Create a New Board
-          </h1>
+      <Container>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl font-bold">
+              Welcome{" "}
+              <span className="bg-gradient-to-r from-cyan-500 to-blue-500 text-transparent bg-clip-text">
+                {user?.name}
+              </span>{" "}
+              to Create a New Board
+            </h1>
+          </div>
+          <Separator />
         </div>
-        <Separator />
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-3xl mx-auto py-10"
-        >
-          <FormField
-            control={form.control}
-            name="boardImageInput"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Board Image</FormLabel>
-                <FormControl>
-                  {files && files.length > 0 ? (
-                    // Disabled upload area when an image is already uploaded
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 max-w-3xl mx-auto py-10"
+          >
+            <FormField
+              control={form.control}
+              name="boardImageInput"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Board Image</FormLabel>
+                  <FormControl>
+                    {files && files.length > 0 ? (
+                      // Disabled upload area when an image is already uploaded
 
-                    <div className="relative w-[200px]">
-                      <Image
-                        width={200}
-                        height={0}
-                        src={URL.createObjectURL(files[0])}
-                        alt="Preview"
-                        className="rounded-md mt-4"
-                      />
-                      <Button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute top-2 right-2 p-0 py-0 h-auto bg-red-500 text-white rounded-full"
+                      <div className="relative w-[200px]">
+                        <Image
+                          width={200}
+                          height={0}
+                          src={URL.createObjectURL(files[0])}
+                          alt="Preview"
+                          className="rounded-md mt-4"
+                        />
+                        <Button
+                          type="button"
+                          onClick={removeImage}
+                          className="absolute top-2 right-2 p-0 py-0 h-auto bg-red-500 text-white rounded-full"
+                        >
+                          <X />
+                        </Button>
+                      </div>
+                    ) : (
+                      // FileUploader component for uploading images
+                      <FileUploader
+                        {...field}
+                        value={files}
+                        onValueChange={handleFileChange}
+                        dropzoneOptions={dropZoneConfig}
+                        className="relative bg-background rounded-lg p-2"
                       >
-                        <X />
-                      </Button>
-                    </div>
-                  ) : (
-                    // FileUploader component for uploading images
-                    <FileUploader
+                        <FileInput
+                          id="fileInput"
+                          className="outline-dashed outline-1 outline-slate-500"
+                        >
+                          <div className="flex items-center justify-center flex-col p-8 w-full ">
+                            <CloudUpload className="text-gray-500 w-10 h-10" />
+                            <p className="mb-1 text-sm text-gray-500 dark:text-gray-400 text-center">
+                              <span className="font-semibold">
+                                Click to upload
+                              </span>{" "}
+                              or drag and drop
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                              SVG, PNG, JPG or GIF
+                            </p>
+                          </div>
+                        </FileInput>
+                      </FileUploader>
+                    )}
+                  </FormControl>
+                  <FormDescription>Select an image to upload.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="BoardName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Board Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter Board Name"
+                      type="text"
                       {...field}
-                      value={files}
-                      onValueChange={handleFileChange}
-                      dropzoneOptions={dropZoneConfig}
-                      className="relative bg-background rounded-lg p-2"
-                    >
-                      <FileInput
-                        id="fileInput"
-                        className="outline-dashed outline-1 outline-slate-500"
-                      >
-                        <div className="flex items-center justify-center flex-col p-8 w-full ">
-                          <CloudUpload className="text-gray-500 w-10 h-10" />
-                          <p className="mb-1 text-sm text-gray-500 dark:text-gray-400 text-center">
-                            <span className="font-semibold">
-                              Click to upload
-                            </span>{" "}
-                            or drag and drop
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                            SVG, PNG, JPG or GIF
-                          </p>
-                        </div>
-                      </FileInput>
-                    </FileUploader>
-                  )}
-                </FormControl>
-                <FormDescription>Select an image to upload.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    />
+                  </FormControl>
+                  <FormDescription>This is your Board name.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="BoardName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Board Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter Board Name"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>This is your Board name.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="boardDescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Board Description</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter Board Description"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    This is your Board Description
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="boardDescription"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Board Description</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter Board Description"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  This is your Board Description
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="boardPrice"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Board Price</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter Board Price"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>This is your Board Price.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* <Button disabled={!isValid} type="submit">
+            <FormField
+              control={form.control}
+              name="boardPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Board Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter Board Price"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>This is your Board Price.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <Button disabled={!isValid} type="submit">
             Submit
           </Button> */}
-          <Button type="submit" disabled={loading}>
-            {loading ? (
-              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-            ) : null}
-            {loading ? "Creating..." : "Create Board"}
-          </Button>
-        </form>
-      </Form>
-    </Container>
+            <Button type="submit" disabled={loading}>
+              {loading ? (
+                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              ) : null}
+              {loading ? "Creating..." : "Create Board"}
+            </Button>
+          </form>
+        </Form>
+      </Container>
+    </>
   );
 }

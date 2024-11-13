@@ -188,8 +188,8 @@ export default function Page({ params }: PageProps) {
         </>
       ) : (
         <>
+          <Toaster />
           <Container>
-            <Toaster />
             <div className="my-9 md:columns-2 columns-1 gap-x-4">
               <PostCard
                 className="mx-auto mb-9"
@@ -201,8 +201,9 @@ export default function Page({ params }: PageProps) {
                 updated_at={board?.updated_at}
                 Author_name={board?.author.name}
                 Author_profile_picture={
-                  board?.author.profile_picture ?? "/avatarPlaceholder.jpg"
+                  board?.author.profile_picture || "/avatarPlaceholder.jpg"
                 }
+                Author_Href={`/user/${board?.author_id}`}
               >
                 <button
                   className={`${
@@ -219,21 +220,23 @@ export default function Page({ params }: PageProps) {
                 </button>
               </PostCard>
               <div className="columns-2 gap-x-4">
-                {posts.map((data) => (
-                  <MasonryCard
-                    className="mb-4 inline-flex"
-                    key={data.Board_id}
-                    showUser={true}
-                    image={data.image_url}
-                    title={data.description}
-                    userImage={
-                      data.author.profile_picture || "/avatarPlaceholder.jpg"
-                    }
-                    userName={data.author.name}
-                    postHref={`/post/${data.Board_id}`}
-                    userHref={`/user/${data.author.user_id}`}
-                  />
-                ))}
+                {posts
+                  .filter((data) => data.Board_id !== BoardId)
+                  .map((data) => (
+                    <MasonryCard
+                      className="mb-4 inline-flex"
+                      key={data.Board_id}
+                      showUser={true}
+                      image={data.image_url}
+                      title={data.description}
+                      userImage={
+                        data.author.profile_picture || "/avatarPlaceholder.jpg"
+                      }
+                      userName={data.author.name}
+                      postHref={`/post/${data.Board_id}`}
+                      userHref={`/user/${data.author.user_id}`}
+                    />
+                  ))}
               </div>
             </div>
           </Container>

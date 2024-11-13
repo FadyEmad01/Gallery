@@ -51,13 +51,12 @@ export default function Home() {
 
   return (
     <>
-      
       {/* hero section */}
       <section>
         <Container>
           <div className="flex justify-center mb-6 mt-28">
             <Badge className="text-sm" variant={"outline"}>
-              <span className="mb-1 text-lg">💵</span>{" "}
+              <span className="md:mb-1 text-lg">💵</span>{" "}
               <ArrowRight className="size-4" /> OurWebsite.com{" "}
               <ArrowRight className="size-4" />{" "}
               <span className="text-lg">🖼️</span>
@@ -207,6 +206,11 @@ export default function Home() {
                   that capture the beauty and emotion of this timeless
                   masterpiece, perfect for transforming your space.
                 </span>
+                <img
+                  className="max-w-[564px] lg:hidden rounded-2xl "
+                  src="/p1.jpeg"
+                  alt=""
+                />
               </div>
               <div className="flex flex-col gap-4 mt-20 mb-8 w-full" ref={ref2}>
                 <h1 className="text-5xl text-start tracking-tighter">
@@ -225,6 +229,11 @@ export default function Home() {
                   that capture the beauty and emotion of this timeless
                   masterpiece, perfect for transforming your space.
                 </span>
+                <img
+                  className="max-w-[564px] lg:hidden rounded-2xl "
+                  src={Section2Data[0].img}
+                  alt=""
+                />
               </div>
               <div className="flex flex-col gap-4 mt-20 mb-7 w-full" ref={ref3}>
                 <h1 className="text-5xl text-start tracking-tighter">
@@ -243,6 +252,11 @@ export default function Home() {
                   that capture the beauty and emotion of this timeless
                   masterpiece, perfect for transforming your space.
                 </span>
+                <img
+                  className="max-w-[564px] lg:hidden rounded-2xl "
+                  src={Section2Data[0].img}
+                  alt=""
+                />
               </div>
             </div>
           </div>

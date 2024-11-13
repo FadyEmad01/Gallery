@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { getToken } from './getToken';
 
 // Define the environment variable type, in case it's not set
@@ -34,6 +35,7 @@ interface Post {
   description: string;
   price: string;
   author: Author;
+  name: string;
 }
 interface ApiPostResponse {
   count: number;
@@ -130,6 +132,22 @@ interface SavedBoard {
   updated_at: string;
 }
 
+// Define the response type for the patch profile response
+// interface PatchProfileResponse {
+//   message: string;
+//   updated_user: {
+//     user_id: string;
+//     name: string;
+//     email: string;
+//     password: string;
+//     image: string;
+//     phone: string;
+//     created_at: string;
+//     updated_at: string;
+//   };
+//   success: boolean;
+// }
+
 export async function fetchProfile(): Promise<UserResponse> {
   const token = getToken(); // Retrieve the token from cookies
   const response = await fetch("https://gallerista-app.vercel.app/api/V0/user/profile", {
@@ -213,13 +231,13 @@ export async function register(data: registerData): Promise<ApiResponse> {
 
   const responseData = await response.json();
 
-
+  console.log(responseData)
   // Assuming your responseData includes the token
   const token = responseData.token; // Adjust this according to your API response structure
   if (token) {
     // Set the token in a cookie
     console.log("token done")
-    document.cookie = `auth_token=${token}; path=/; max-age=${60 * 60}; secure; SameSite=Strict`;
+    document.cookie = `auth_token=${token}; path=/; max-age=${60 * 60 * 24}; secure; SameSite=Strict`;
   }
 
 
@@ -442,4 +460,73 @@ export async function unsaveBoardById(boardId: string): Promise<SaveBoardRespons
     save: responseData.save,
     success: true,
   };
+}
+
+
+// Create the function to patch the profile
+// export async function patchProfile(profileData: {
+//   name?: string;
+//   email?: string;
+//   phone?: string;
+//   image?: string;
+// }): Promise<PatchProfileResponse> {
+//   const token = getToken(); // Retrieve the user's token
+
+//   const response = await fetch(`https://gallerista-app.vercel.app/api/V0/user`, {
+//     method: 'PATCH', // Use PATCH for updating the profile
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': `${token}`,
+//       'x-api-key': API_KEY,
+//     },
+//     body: JSON.stringify(profileData), // Send profile data as JSON
+//   });
+
+//   if (!response.ok) {
+//     const errorData = await response.json();
+//     console.error("Error updating profile:", errorData);
+//     return {
+//       message: errorData.message || 'Failed to update profile',
+//       updated_user: {
+//         user_id: '',
+//         name: '',
+//         email: '',
+//         password: '',
+//         image: '',
+//         phone: '',
+//         created_at: '',
+//         updated_at: '',
+//       },
+//       success: false,
+//     };
+//   }
+
+//   const responseData = await response.json();
+//   return {
+//     message: responseData.message,
+//     updated_user: responseData.updated_user,
+//     success: true,
+//   };
+// }
+
+export async function patchUserProfile(data: FormData): Promise<ApiResponse> {
+  const token = getToken(); // Retrieve the token
+
+  const response = await fetch("https://gallerista-app.vercel.app/api/V0/user", {
+    method: "PATCH",
+    headers: {
+      "x-api-key": API_KEY,
+      'Authorization': `${token}`,
+    },
+    body: data, // Send FormData directly as the request body
+  });
+
+  if (!response.ok) {
+    // Handle HTTP errors
+    const errorData = await response.json();
+    return { success: false, data: null, message: errorData.message || "Failed to update profile" };
+  }
+
+  const responseData = await response.json();
+  return { success: true, data: responseData.updated_user, message: responseData.message };
 }
