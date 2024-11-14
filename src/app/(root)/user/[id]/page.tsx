@@ -139,7 +139,9 @@ export default function Page({ params }: PageProps) {
                         user?.profile_picture || "/avatarPlaceholder.jpg"
                       } // Replace with the correct field name if available
                       userName={user?.name}
+                      postHref={`/post/${data.Board_id}`}
                       key={data.Board_id}
+                      showDropdown={false}
                     />
                   ))}
               </div>

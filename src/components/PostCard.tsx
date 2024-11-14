@@ -23,7 +23,7 @@ export const PostCard = (props: PostCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <div className={cn("w-[100%] md:w-[50%]1 rounded-[2rem] shadow-2xl md:hiddene block", props.className)}>
+      <div className={cn("w-[100%] rounded-[2rem] shadow-2xl inline-block", props.className)}>
         <div className="flex flex-col justify-between h-full p-4">
           <div className="flex items-center justify-between">
             <div className="flex group items-center gap-2">

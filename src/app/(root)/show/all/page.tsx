@@ -10,11 +10,12 @@ import { useEffect, useState } from "react";
 // import { Navbar } from "@/components/Navbar";
 
 interface PostData {
-  Board_id: string;
+  board_id: string;
   image_url: string;
   description: string;
   name: string;
   price: string;
+  dominant_color?: string;
   author: {
     user_id: string;
     email: string;
@@ -142,7 +143,7 @@ export default function Home() {
           <div className="masonry my-9">
             {posts.map((data) => (
               <MasonryCard
-                key={data.Board_id}
+                key={data.board_id}
                 showUser={true}
                 image={data.image_url}
                 title={data.name}
@@ -150,8 +151,10 @@ export default function Home() {
                   data.author.profile_picture || "/avatarPlaceholder.jpg"
                 }
                 userName={data.author.name}
-                postHref={`/post/${data.Board_id}`}
+                postHref={`/post/${data.board_id}`}
                 userHref={`/user/${data.author.user_id}`}
+                dominant_color={data.dominant_color}
+                showDropdown={false}
               />
             ))}
           </div>

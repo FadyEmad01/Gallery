@@ -30,7 +30,8 @@ interface Author {
   profile_picture: string | null;
 }
 interface Post {
-  Board_id: string;
+  dominant_color?: string;
+  board_id: string;
   image_url: string;
   description: string;
   price: string;
@@ -81,7 +82,7 @@ interface UserResponse {
 
 // get board by id api interface 
 interface Board_GetBoardById {
-  Board_id: string;
+  board_id: string;
   name: string;
   author_id: string;
   image_url: string;
@@ -249,9 +250,23 @@ export async function register(data: registerData): Promise<ApiResponse> {
 
 export async function getAllPosts(): Promise<{ success: boolean; data: ApiPostResponse | null; message: string }> {
   try {
-    const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards", {
+    // without dominant_color
+
+    // const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards", {
+    //   next: { revalidate: 0 },
+    //   cache: "no-store",
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "x-api-key": API_KEY // replace API_KEY with your actual API key
+    //   },
+    // });
+
+    // dominant_color
+
+    const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards2", {
       next: { revalidate: 0 },
-      cache: "no-store",
+      // cache: "no-store",
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -529,4 +544,26 @@ export async function patchUserProfile(data: FormData): Promise<ApiResponse> {
 
   const responseData = await response.json();
   return { success: true, data: responseData.updated_user, message: responseData.message };
+}
+
+
+
+export async function deleteBoard(boardId: string): Promise<ApiResponse> {
+  const token = getToken(); // Retrieve the token from cookies
+  const response = await fetch(`https://gallerista-app.vercel.app/api/V0/deleteBoard/${boardId}`, {
+    method: "DELETE",
+    headers: {
+      "x-api-key": API_KEY,
+      "Authorization": `${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    // Handle HTTP errors
+    const errorData = await response.json();
+    return { success: false, data: null, message: errorData.error }; // Ensure data is null
+  }
+
+  const responseData = await response.json();
+  return { success: true, data: responseData, message: responseData.message }; // Return the actual data on success
 }

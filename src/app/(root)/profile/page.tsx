@@ -4,14 +4,15 @@ import { MasonryCard } from "@/components/MasonryCard";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
 // import { userData } from "@/Data/user";
 import { useToast } from "@/hooks/use-toast";
-import { fetchProfile, getSavedBoards } from "@/lib/api";
+import { deleteBoard, fetchProfile, getSavedBoards } from "@/lib/api";
 import { Dialog } from "@headlessui/react";
-import { Plus, X } from "lucide-react";
+import { Plus, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -100,6 +101,42 @@ export default function Page() {
 
     fetchData();
   }, [tabs]);
+
+  const handleDelete = async (boardId: string) => {
+    try {
+      const response = await deleteBoard(boardId);
+
+      if (response.success) {
+        // Update the boards list by removing the deleted board
+        setUser((prevUser) => {
+          if (!prevUser) return prevUser;
+          const updatedBoards = prevUser.boards.filter(
+            (board) => board.Board_id !== boardId
+          );
+          return { ...prevUser, boards: updatedBoards };
+        });
+
+        toast({
+          variant: "default",
+          title: "Success",
+          description: "Board deleted successfully.",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to delete the board.",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting board:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "An error occurred while deleting the board.",
+      });
+    }
+  };
 
   return (
     <>
@@ -217,6 +254,7 @@ export default function Page() {
                       } // Adjust this if necessary
                       userName={board.author.name} // Adjust this if necessary
                       userHref={`/user/${board.author.author_id}`}
+                      showDropdown={false}
                     />
                   ))}
               </div>
@@ -269,7 +307,18 @@ export default function Page() {
                       } // Replace with the correct field name if available
                       userName={user?.name}
                       key={data.Board_id}
-                    />
+                      showDropdown={true}
+                      // dominant_color={data.dominant_color}
+                    >
+                      <DropdownMenuItem
+                        onClick={() => handleDelete(data.Board_id)}
+                        className="text-red-600 flex justify-between"
+                      >
+                        Delete
+                        {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+                        <Trash2 />
+                      </DropdownMenuItem>
+                    </MasonryCard>
                   ))}
               </div>
             </>
