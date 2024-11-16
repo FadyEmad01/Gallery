@@ -17,7 +17,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface createdPostMasonry {
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   name: string;
   Board_id: string;
 }
@@ -34,11 +39,17 @@ interface user {
 interface Board {
   Board_id: string;
   name: string;
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   description: string;
   price: string;
   created_at: string;
 }
+
 interface SavedBoard {
   board_id: string;
   name: string;
@@ -47,7 +58,12 @@ interface SavedBoard {
     name: string;
     profile_picture: string;
   };
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   description: string;
   price: string;
   created_at: string;
@@ -245,7 +261,7 @@ export default function Page() {
                   .map((board) => (
                     <MasonryCard
                       key={board.board_id}
-                      image={board.image_url}
+                      image={board.image.image_url}
                       title={board.name}
                       showUser={true}
                       postHref={`/post/${board.board_id}`}
@@ -254,6 +270,9 @@ export default function Page() {
                       } // Adjust this if necessary
                       userName={board.author.name} // Adjust this if necessary
                       userHref={`/user/${board.author.author_id}`}
+                      imageHeight={board.image.height}
+                      imageWidth={board.image.width}
+                      dominant_color={board.image.dominant_color}
                       showDropdown={false}
                     />
                   ))}
@@ -300,7 +319,7 @@ export default function Page() {
                   .map((data: createdPostMasonry) => (
                     <MasonryCard
                       showUser={false}
-                      image={data.image_url}
+                      image={data.image.image_url}
                       title={data.name}
                       userImage={
                         user?.profile_picture || "/avatarPlaceholder.jpg"
@@ -308,7 +327,9 @@ export default function Page() {
                       userName={user?.name}
                       key={data.Board_id}
                       showDropdown={true}
-                      // dominant_color={data.dominant_color}
+                      dominant_color={data.image.dominant_color}
+                      imageHeight={data.image.height}
+                      imageWidth={data.image.width}
                     >
                       <DropdownMenuItem
                         onClick={() => handleDelete(data.Board_id)}

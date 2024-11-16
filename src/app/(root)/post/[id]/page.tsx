@@ -22,10 +22,15 @@ import { Bookmark, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface board {
-  board_id: string;
+  Board_id: string;
   name: string;
   author_id: string;
-  image_url: string;
+  image: {
+    image_url: string;
+    dominantColor: string;
+    width: number;
+    heigth: number;
+  };
   description: string;
   price: string;
   created_at: string;
@@ -57,12 +62,16 @@ interface PageProps {
 }
 
 interface PostData {
-  board_id: string;
-  image_url: string;
+  Board_id: string;
+  image: {
+    image_url: string
+    dominantColor: string,
+    width: number,
+    heigth: number
+  };
   description: string;
   price: string;
   name: string;
-  dominant_color?: string;
   author: {
     user_id: string;
     email: string;
@@ -193,57 +202,61 @@ export default function Page({ params }: PageProps) {
           <Toaster />
           <Container>
             <div className="my-9 md:columns-2 columns-1 gap-x-4">
-                <PostCard
-                  className="mx-auto mb-9"
-                  Board_image={board?.image_url}
-                  Board_name={board?.name}
-                  Board_description={board?.description}
-                  Board_price={board?.price}
-                  created_at={formattedDate}
-                  updated_at={board?.updated_at}
-                  Author_name={board?.author.name}
-                  Author_profile_picture={
-                    board?.author.profile_picture || "/avatarPlaceholder.jpg"
-                  }
-                  Author_Href={`/user/${board?.author_id}`}
+              <PostCard
+                className="mx-auto mb-9"
+                Board_image={board?.image.image_url}
+                Board_name={board?.name}
+                Board_description={board?.description}
+                Board_price={board?.price}
+                created_at={formattedDate}
+                updated_at={board?.updated_at}
+                Author_name={board?.author.name}
+                Author_profile_picture={
+                  board?.author.profile_picture || "/avatarPlaceholder.jpg"
+                }
+                Author_Href={`/user/${board?.author_id}`}
+                imageHeight={board?.image.heigth}
+                imageWidth={board?.image.width}
+                dominant_color={board?.image.dominantColor}
+              >
+                <button
+                  className={`${
+                    isSaved ? "" : ""
+                  } rounded-full p-2 bg-white shadow-md`}
+                  onClick={handleSaveToggle}
                 >
-                  <button
-                    className={`${
-                      isSaved ? "" : ""
-                    } rounded-full p-2 bg-white shadow-md`}
-                    onClick={handleSaveToggle}
-                  >
-                    {isSaved ? (
-                      <Bookmark className="text-myMedBlue fill-myLightBlue" />
-                    ) : (
-                      <Bookmark className="text-myMedBlue" />
-                    )}
-                    {/* <Bookmark className="" /> */}
-                  </button>
-                </PostCard>
+                  {isSaved ? (
+                    <Bookmark className="text-myMedBlue fill-myLightBlue" />
+                  ) : (
+                    <Bookmark className="text-myMedBlue" />
+                  )}
+                  {/* <Bookmark className="" /> */}
+                </button>
+              </PostCard>
 
               <div className="columns-2 gap-x-4">
                 {posts
-                  .filter((data) => data.board_id !== BoardId)
+                  .filter((data) => data.Board_id !== BoardId)
                   .map((data) => (
                     <MasonryCard
                       className="mb-4 inline-flex"
-                      key={data.board_id}
+                      key={data.Board_id}
                       showUser={true}
-                      image={data.image_url}
+                      image={data.image.image_url}
                       title={data.name}
                       userImage={
                         data.author.profile_picture || "/avatarPlaceholder.jpg"
                       }
                       userName={data.author.name}
-                      postHref={`/post/${data.board_id}`}
+                      postHref={`/post/${data.Board_id}`}
                       userHref={`/user/${data.author.user_id}`}
-                      dominant_color={data.dominant_color}
+                      dominant_color={data.image.dominantColor}
+                      imageHeight={data.image.heigth}
+                      imageWidth={data.image.width}
                       showDropdown={false}
                     />
                   ))}
               </div>
-
             </div>
           </Container>
 

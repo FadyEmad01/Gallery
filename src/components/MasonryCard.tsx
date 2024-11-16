@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,12 +30,28 @@ interface MansoryProps {
   className?: string;
   dominant_color?: string;
   showDropdown: boolean;
-  children?: React.ReactNode; 
+  children?: React.ReactNode;
+  imageHeight: number;
+  imageWidth: number;
 }
 
 export const MasonryCard = (props: MansoryProps) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // On mount, calculate the width of the container
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.offsetWidth);
+    }
+  }, [containerRef.current]);
+
+  // Calculate the aspect ratio and set the height of the placeholder div
+  const aspectRatio = props.imageWidth / props.imageHeight;
+  const placeholderHeight = containerWidth / aspectRatio;
 
   return (
     <div
@@ -43,20 +59,22 @@ export const MasonryCard = (props: MansoryProps) => {
         "flex flex-col gap-1 bg-transparent w-full flex-nowrap overflow-hidden",
         props.className
       )}
+      ref={containerRef}
     >
       <div className="relative overflow-hidden group">
         <Link href={props.postHref ?? ""}>
           <div className="flex flex-col gap-1 flex-nowrap">
             <div
               className={cn(
-                "w-full rounded-2xl h-auto animate-customPulse ",
+                "rounded-2xl animate-customPulse",
                 isImageLoaded ? "hidden" : "block" // Show only when image has loaded
                 // !isImageLoaded && "block",
-                // "hidden" // Initially hidden, shown when image hasn't loaded
+                // "hidden" // Initially hidden, shown when image hasn't loaded,
               )}
               style={{
                 backgroundColor: props.dominant_color,
                 paddingTop: "100%",
+                height: placeholderHeight, // Set the height dynamically based on the aspect ratio
               }} // Maintain aspect ratio
             />
             <img

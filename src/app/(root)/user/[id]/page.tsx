@@ -29,14 +29,24 @@ interface user {
 interface Board {
   Board_id: string;
   name: string;
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   description: string;
   price: string;
   created_at: string;
 }
 
 interface createdPostMasonry {
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   name: string;
   Board_id: string;
 }
@@ -72,9 +82,8 @@ export default function Page({ params }: PageProps) {
 
   return (
     <>
-     <Toaster />
+      <Toaster />
       <Container>
-       
         <div className="flex flex-col gap-2 justify-center items-center my-9">
           <Avatar className="size-36">
             <AvatarImage
@@ -133,7 +142,7 @@ export default function Page({ params }: PageProps) {
                   .map((data: createdPostMasonry) => (
                     <MasonryCard
                       showUser={false}
-                      image={data.image_url}
+                      image={data.image.image_url}
                       title={data.name}
                       userImage={
                         user?.profile_picture || "/avatarPlaceholder.jpg"
@@ -142,6 +151,9 @@ export default function Page({ params }: PageProps) {
                       postHref={`/post/${data.Board_id}`}
                       key={data.Board_id}
                       showDropdown={false}
+                      imageHeight={data.image.height}
+                      imageWidth={data.image.width}
+                      dominant_color={data.image.dominant_color}
                     />
                   ))}
               </div>

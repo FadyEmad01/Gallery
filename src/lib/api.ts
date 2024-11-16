@@ -30,9 +30,13 @@ interface Author {
   profile_picture: string | null;
 }
 interface Post {
-  dominant_color?: string;
-  board_id: string;
-  image_url: string;
+  Board_id: string;
+  image: {
+    image_url: string
+    dominantColor: string,
+    width: number,
+    heigth: number
+  };
   description: string;
   price: string;
   author: Author;
@@ -56,7 +60,12 @@ interface ApiPostResponse {
 interface Board {
   Board_id: string;
   name: string;
-  image_url: string;
+  image: {
+    image_url: string
+    dominant_color: string,
+    width: number,
+    height: number
+  };
   description: string;
   price: string;
   created_at: string;
@@ -69,6 +78,7 @@ interface User {
   email: string;
   phone: string;
   boards: Board[]; // Array of Board
+  profile_picture: string;
 }
 
 // Define an interface for the API response
@@ -82,10 +92,15 @@ interface UserResponse {
 
 // get board by id api interface 
 interface Board_GetBoardById {
-  board_id: string;
+  Board_id: string;
   name: string;
   author_id: string;
-  image_url: string;
+  image: {
+    image_url: string
+    dominantColor: string,
+    width: number,
+    heigth: number
+  };
   description: string;
   price: string;
   created_at: string;
@@ -126,7 +141,12 @@ interface SavedBoard {
     name: string,
     profile_picture: string
   }
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   description: string;
   price: string;
   created_at: string;
@@ -250,29 +270,28 @@ export async function register(data: registerData): Promise<ApiResponse> {
 
 export async function getAllPosts(): Promise<{ success: boolean; data: ApiPostResponse | null; message: string }> {
   try {
-    // without dominant_color
 
-    // const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards", {
-    //   next: { revalidate: 0 },
-    //   cache: "no-store",
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "x-api-key": API_KEY // replace API_KEY with your actual API key
-    //   },
-    // });
-
-    // dominant_color
-
-    const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards2", {
+    const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards", {
       next: { revalidate: 0 },
-      // cache: "no-store",
+      cache: "no-store",
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "x-api-key": API_KEY // replace API_KEY with your actual API key
       },
     });
+
+    // // dominant_color
+
+    // const response = await fetch("https://gallerista-app.vercel.app/api/V0/boards2", {
+    //   next: { revalidate: 0 },
+    //   // cache: "no-store",
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "x-api-key": API_KEY // replace API_KEY with your actual API key
+    //   },
+    // });
 
     if (!response.ok) {
       // Handle HTTP errors

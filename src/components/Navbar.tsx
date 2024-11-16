@@ -37,7 +37,12 @@ interface user {
 interface Board {
   Board_id: string;
   name: string;
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   description: string;
   price: string;
   created_at: string;

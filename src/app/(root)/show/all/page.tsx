@@ -4,18 +4,21 @@ import { MasonryCard } from "@/components/MasonryCard";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { getAllPosts } from "@/lib/api";
-import { log } from "console";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 // import { Navbar } from "@/components/Navbar";
 
 interface PostData {
-  board_id: string;
-  image_url: string;
+  Board_id: string;
+  image: {
+    image_url: string;
+    dominantColor: string;
+    width: number;
+    heigth: number;
+  };
   description: string;
   name: string;
   price: string;
-  dominant_color?: string;
   author: {
     user_id: string;
     email: string;
@@ -143,17 +146,19 @@ export default function Home() {
           <div className="masonry my-9">
             {posts.map((data) => (
               <MasonryCard
-                key={data.board_id}
+                key={data.Board_id}
                 showUser={true}
-                image={data.image_url}
+                image={data.image.image_url}
                 title={data.name}
                 userImage={
                   data.author.profile_picture || "/avatarPlaceholder.jpg"
                 }
                 userName={data.author.name}
-                postHref={`/post/${data.board_id}`}
+                postHref={`/post/${data.Board_id}`}
                 userHref={`/user/${data.author.user_id}`}
-                dominant_color={data.dominant_color}
+                dominant_color={data.image.dominantColor}
+                imageHeight={data.image.heigth}
+                imageWidth={data.image.width}
                 showDropdown={false}
               />
             ))}

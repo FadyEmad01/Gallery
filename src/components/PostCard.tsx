@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { FaWhatsapp } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import { Maximize2, X } from "lucide-react";
@@ -18,12 +18,36 @@ interface PostCardProps {
   Author_profile_picture?: string;
   Author_Href?: string;
   Author_WhatsApp_Number?: string;
+  imageHeight?: number;
+  imageWidth?: number;
+  dominant_color?: string;
 }
 export const PostCard = (props: PostCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // On mount, calculate the width of the container
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.offsetWidth);
+    }
+  }, [containerRef.current]);
+
+  // Calculate the aspect ratio and set the height of the placeholder div
+  const aspectRatio = (props.imageWidth || 1) / (props.imageHeight || 1);
+  const placeholderHeight = containerWidth / aspectRatio;
+
   return (
     <>
-      <div className={cn("w-[100%] rounded-[2rem] shadow-2xl inline-block", props.className)}>
+      <div
+        className={cn(
+          "w-[100%] rounded-[2rem] shadow-2xl inline-block",
+          props.className
+        )}
+      >
         <div className="flex flex-col justify-between h-full p-4">
           <div className="flex items-center justify-between">
             <div className="flex group items-center gap-2">
@@ -51,15 +75,35 @@ export const PostCard = (props: PostCardProps) => {
             <h3 className="text-2xl tracking-tight">{props.Board_name}</h3>
             <p className="text-sm tracking-wide">{props.Board_description}</p>
           </div>
-          <div className="w-full mt-3 relative">
+          <div className="w-full mt-3 relative" ref={containerRef}>
+            <div
+              className={cn(
+                "rounded-2xl animate-customPulse",
+                isImageLoaded ? "hidden" : "block" // Show only when image has loaded
+                // !isImageLoaded && "block",
+                // "hidden" // Initially hidden, shown when image hasn't loaded,
+              )}
+              style={{
+                backgroundColor: props.dominant_color,
+                paddingTop: "100%",
+                height: placeholderHeight, // Set the height dynamically based on the aspect ratio
+              }} // Maintain aspect ratio
+            />
             <img
-              className="object-cover w-full rounded-2xl h-auto"
+              className={cn(
+                "object-cover w-full rounded-2xl h-auto",
+                isImageLoaded ? "block" : "hidden" // Show only when image has loaded
+              )}
               src={props.Board_image}
               alt={props.Board_name}
+              onLoad={() => setIsImageLoaded(true)}
             />
-             <div className="absolute top-3 right-3">
+            <div className="absolute top-3 right-3">
               <button
-                className="bg-white/75 rounded-full p-2 "
+                className={cn(
+                  "bg-white/75 rounded-full p-2 ",
+                  isImageLoaded ?  "block" :"hidden"
+                )}
                 onClick={() => setIsOpen(true)}
               >
                 <Maximize2 />
