@@ -34,7 +34,12 @@ interface user {
 interface Board {
   Board_id: string;
   name: string;
-  image_url: string;
+  image: {
+    image_url: string;
+    dominant_color: string;
+    width: number;
+    height: number;
+  };
   description: string;
   price: string;
   created_at: string;
@@ -67,7 +72,6 @@ export default function SettingsProfilePage() {
   const [BtnLoading, setBtnLoading] = useState(false); // Loading state
   const [user, setUser] = useState<user | null>(null); // State for user profile
   // const [profilePicture, setProfilePicture] = useState<File | null>(null); // State for profile picture
-
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
