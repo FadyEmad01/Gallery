@@ -19,6 +19,7 @@ import {
   unsaveBoardById,
 } from "@/lib/api";
 import { Bookmark, LoaderCircle } from "lucide-react";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 
 interface board {
@@ -193,6 +194,15 @@ export default function Page({ params }: PageProps) {
 
   return (
     <>
+      <Head>
+        <title>{board ? `${board.name} | gallery` : 'Loading...'}</title>
+        <meta name="description" content={board?.description || 'Loading board details...'} />
+        <meta property="og:title" content={board ? `${board.name} | gallery` : 'gallery Board'} />
+        <meta property="og:description" content={board?.description || 'View this amazing board on gallery'} />
+        <meta property="og:image" content={board?.image.image_url || '/default-og-image.jpg'} />
+        <meta property="og:url" content={`https://gallery-gilt-kappa.vercel.app/post/${id}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       {loading ? (
         <>
           <LoaderCircle className="mx-auto animate-spin size-10 mt-9" />
@@ -222,11 +232,14 @@ export default function Page({ params }: PageProps) {
                 <button
                   className={`${
                     isSaved ? "" : ""
-                  } rounded-full p-2 bg-white shadow-md`}
+                  } rounded-full p-2 bg-white/75 shadow-md`}
                   onClick={handleSaveToggle}
                 >
                   {isSaved ? (
-                    <Bookmark className="text-myMedBlue fill-myLightBlue" />
+                    <>
+                     <Bookmark className="text-myMedBlue fill-myLightBlue" />
+                    </>
+                   
                   ) : (
                     <Bookmark className="text-myMedBlue" />
                   )}

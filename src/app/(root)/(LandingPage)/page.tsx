@@ -4,6 +4,7 @@ import { BentoCard } from "@/components/BentoCard";
 import { Container } from "@/components/Container";
 import { Cursor2 } from "@/components/CursorFigma";
 import { DialogBasicForImageCard } from "@/components/DialogBasicForImageCard";
+import Footer from "@/components/Footer";
 // import { Navbar } from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -266,15 +267,13 @@ export default function Home() {
 
       {/* section 4 */}
 
-      <section className="my-20">
+      {/* <section className="my-20">
         <h1 className="text-5xl text-center tracking-tighter mb-9">
           The Art We Sell
         </h1>
 
         <Container className="">
           <div className="grid grid-cols-12 grid-rows-12 gap-4 w-full">
-            {/* card 1 */}
-
             <BentoCard className=" sm:col-span-6 col-span-full row-span-6 py-3 overflow-hidden bg-myLightBlue">
               <p className="mb-4 text-2xl font-bold px-4">
                 Discover the elegance of Arts here
@@ -347,41 +346,27 @@ export default function Home() {
                 </DialogBasicForImageCard>
               </div>
 
-              {/* <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" /> */}
             </BentoCard>
 
-            {/* end card 1 */}
-            {/* card 2 */}
             <BentoCard className="sm:col-span-6 col-span-full row-span-6 transition-transform duration-300 bg-[#2C459E] bg-[url('/gif.gif')] bg-cover bg-top bg-no-repeat hover:bg-white hover:bg-none">
               <div className="flex h-full items-end">
                 <p className=" text-2xl font-bold text-black px-4 pb-3">
                   Discover the elegance of animation here
                 </p>
               </div>
-
-              {/* <div className="flex -space-x-9">
-             
-              </div> */}
-              {/* <div>   
-                  <img className="w-100 xl:h-36" src="/gif.gif"></img>
-              </div> */}
-              {/* <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" /> */}
             </BentoCard>
-            {/* end card 2 */}
 
-            {/* card 3 */}
             <BentoCard className=" col-span-full row-span-8 py-3 bg-[url('/47-1.png')] bg-cover bg-center bg-no-repeat">
               <p className="mb-4 text-xl font-bold px-4 text-myBlueDark">
                 Discover the elegance of {ourArt[1].category} here
               </p>
               <img className="w-64 mx-auto" src="/Group 57.svg" alt="" />
             </BentoCard>
-            {/* end card 3 */}
           </div>
         </Container>
-      </section>
+      </section> */}
 
-      {/* end section 4 */}
+      <Footer />
     </>
   );
 }

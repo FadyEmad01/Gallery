@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 // import { FaWhatsapp } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import { Maximize2, X } from "lucide-react";
+import { PostCardDropdown } from "./PostCardDropdown";
 
 interface PostCardProps {
   children?: React.ReactNode;
@@ -40,6 +41,42 @@ export const PostCard = (props: PostCardProps) => {
   const aspectRatio = (props.imageWidth || 1) / (props.imageHeight || 1);
   const placeholderHeight = containerWidth / aspectRatio;
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: props.Board_name,
+        text: props.Board_description,
+        url: window.location.href,
+      });
+    } else {
+      alert(`Share this link: ${window.location.href}`);
+    }
+  };
+
+  const handleImageDownload = () => {
+    if (props.Board_image) {
+      const fileExtension = props.Board_image.split('.').pop()?.toLowerCase()
+      if (fileExtension === 'gif' || fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg') {
+        fetch(props.Board_image)
+          .then(response => response.blob())
+          .then(blob => {
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.style.display = 'none'
+            a.href = url
+            a.download = `${props.Board_name}.${fileExtension}`
+            document.body.appendChild(a)
+            a.click()
+            window.URL.revokeObjectURL(url)
+          })
+      } else {
+        alert('Unsupported file format. Only GIF, PNG, and JPG/JPEG are supported.')
+      }
+    } else {
+      alert('No image available for this board.')
+    }
+  }
+
   return (
     <>
       <div
@@ -69,7 +106,11 @@ export const PostCard = (props: PostCardProps) => {
                 </span>
               </div>
             </div>
-            {props.children}
+            <PostCardDropdown
+              title={props.Board_name!}
+              onShare={handleShare}
+              onDownload={handleImageDownload}
+            />
           </div>
           <div className="mt-3">
             <h3 className="text-2xl tracking-tight">{props.Board_name}</h3>
@@ -102,13 +143,14 @@ export const PostCard = (props: PostCardProps) => {
               <button
                 className={cn(
                   "bg-white/75 rounded-full p-2 ",
-                  isImageLoaded ?  "block" :"hidden"
+                  isImageLoaded ? "block" : "hidden"
                 )}
                 onClick={() => setIsOpen(true)}
               >
                 <Maximize2 />
               </button>
             </div>
+            <div className="absolute top-3 left-3">{props.children}</div>
           </div>
         </div>
       </div>

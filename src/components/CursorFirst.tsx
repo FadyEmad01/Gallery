@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { PlusIcon } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Cursor } from './core/cursor';
 
 
@@ -57,7 +57,7 @@ export function CursorFirst(props:PropsCursor){
                 className='inline-flex w-full items-center justify-center'
               >
                 <div className='px-4 py-2 inline-flex items-center text-sm text-white dark:text-black'>
-                 Learn More <PlusIcon className='ml-1 h-4 w-4' />
+                 Learn More <ArrowUpRight className='ml-1 h-4 w-4' />
                 </div>
               </motion.div>
             ) : null}
