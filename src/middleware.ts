@@ -30,7 +30,7 @@ export const config = {
     // Match all paths under /profile
     '/profile/:path*',
     '/user/:path*',
-    // '/post/:path*',
+    '/post/:path*',
     // Add other protected routes here
     // '/dashboard/:path*',
     // Exclude authentication-related paths and API routes
