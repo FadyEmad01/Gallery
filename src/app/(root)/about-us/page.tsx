@@ -51,7 +51,7 @@ const page = () => {
                     },
                   }}
                 >
-                  Upload Your
+                  Welcome to
                 </TextEffect>
                 <TextEffect
                   per="char"
@@ -84,9 +84,9 @@ const page = () => {
                       },
                     },
                   }}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 inline-block text-transparent bg-clip-text"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 inline-block text-transparent bg-clip-text pb-1"
                 >
-                  PDF
+                  gallery
                 </TextEffect>
                 <div className="w-full"></div>
                 <TextEffect
@@ -121,7 +121,7 @@ const page = () => {
                     },
                   }}
                 >
-                  To add your Signature
+                  Where Creativity Meets Inspiration!
                 </TextEffect>
               </div>
             </div>
