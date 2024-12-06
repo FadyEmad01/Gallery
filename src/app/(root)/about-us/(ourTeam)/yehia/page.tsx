@@ -53,7 +53,7 @@ export default function Page() {
               }
               className="h-full w-full object-cover rounded-2xl"
               src="https://i.pinimg.com/564x/4a/89/73/4a8973f42795bc5d4912c01452f21ea4.jpg"
-              alt="Fady profile background"
+              alt="Yehia profile background"
             />
           </div>
         </div>
@@ -61,8 +61,8 @@ export default function Page() {
           <div className="flex flex-col sm:flex-row gap-x-4 items-center">
             <div className="relative flex size-44 items-center justify-center overflow-hidden rounded-full border-[7px] border-background bg-muted shadow-sm shadow-black/10">
               <Image
-                onClick={() => handleImageClick("/Fady.png")}
-                src="/Fady.png"
+                onClick={() => handleImageClick("/Yehia.jpg")}
+                src="/Yehia.jpg"
                 className="h-full w-full object-cover"
                 width={1200}
                 height={1200}
@@ -72,9 +72,9 @@ export default function Page() {
             </div>
             <div className="flex flex-col items-center sm:items-start relative z-50">
               <h1 className="text-4xl mt-2 tracking-tight font-semibold">
-                Fady Emad
+                Yehia Mohamed
               </h1>
-              <p className="text-muted-foreground mt-1">Front-End Developer</p>
+              <p className="text-muted-foreground mt-1">Back-End Developer</p>
             </div>
           </div>
         </div>
@@ -83,39 +83,22 @@ export default function Page() {
             <div className="sm:col-span-1 col-span-full">
               <div className="w-full rounded-2xl bg-muted shadow px-4 py-3">
                 <p className="text-xl font-semibold">Social media</p>
-                <div className="flex gap-3 flex-wrap mt-2">
+                <div className="flex gap-3 flex-wrap mt-2">                
                   <a
-                    href="https://www.facebook.com/fady.emad.144181"
-                    target="_blank"
-                  >
-                    <img
-                      className="size-8"
-                      src="/Facebook.svg"
-                      alt="Fady Facebook"
-                    />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/fady-emad-sabry/"
+                    href="https://www.linkedin.com/in/yehia-mohamed-9b86b524b/"
                     target="_blank"
                   >
                     <img
                       className="size-8"
                       src="/Linkedin.svg"
-                      alt="Fady Linkedin"
+                      alt="Yehia Linkedin"
                     />
                   </a>
-                  <a href="https://github.com/FadyEmad01" target="_blank">
+                  <a href="https://github.com/yehiamoh" target="_blank">
                     <img
                       className="size-8"
                       src="/github.svg"
-                      alt="Fady github"
-                    />
-                  </a>
-                  <a href="https://wa.me/+201203289612" target="_blank">
-                    <img
-                      className="size-8"
-                      src="/WhatsApp.svg"
-                      alt="Fady WhatsApp"
+                      alt="Yehia github"
                     />
                   </a>
                 </div>

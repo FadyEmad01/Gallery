@@ -3,6 +3,7 @@ import { ReactNode, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Cursor } from './core/cursor';
+import Link from 'next/link';
 
 
 interface PropsCursor{
@@ -24,7 +25,7 @@ export function CursorFirst(props:PropsCursor){
   };
 
   return (
-    <a href={props.href} className=''>
+    <Link href={props.href || '#'} className=''>
       <Cursor
         attachToParent
         variants={{
@@ -72,6 +73,6 @@ export function CursorFirst(props:PropsCursor){
         /> */}
         {props.children}
       </div>
-    </a>
+    </Link>
   );
 }

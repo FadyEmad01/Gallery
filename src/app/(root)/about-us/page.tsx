@@ -91,7 +91,7 @@ const page = () => {
                 <div className="w-full"></div>
                 <TextEffect
                   per="word"
-                  delay={0.9}
+                  delay={1}
                   variants={{
                     container: {
                       hidden: {
@@ -182,11 +182,11 @@ const page = () => {
                 </CursorFirst>
               </div>
               <div className="col-span-1">
-                <CursorFirst>
+                <CursorFirst href="/about-us/yehia">
                   <img
-                    src="https://i.pinimg.com/236x/7b/2e/c3/7b2ec32654c71caf015c0e2f01a6d61f.jpg"
+                    src="/Yehia.jpg"
                     className="w-full aspect-square rounded-2xl object-cover"
-                    alt="Fady image"
+                    alt="Yehia image"
                   />
                 </CursorFirst>
               </div>
