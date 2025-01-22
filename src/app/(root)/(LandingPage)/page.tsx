@@ -154,7 +154,9 @@ export default function Home() {
                 masterpiece, perfect for transforming your space.
               </span>
               <div className="flex justify-start">
-                <Button className="">Buy It Now</Button>
+                <Button className="">
+                  <Link href="/show/all">Browse us</Link>
+                </Button>
               </div>
             </div>
 
@@ -192,20 +194,15 @@ export default function Home() {
             <div className="lg:w-5/12 w-full">
               <div className="flex flex-col gap-4 pt-14 w-full" ref={ref1}>
                 <h1 className="text-5xl text-start tracking-tighter">
-                  Discover Your Next Masterpiece By{" "}
-                  <span className="inline-block">Fady Emad</span>
+                  Discover Your Next Masterpiece
                 </h1>
                 <span className="text-start ">
                   Where every brushstroke tells a story. From vibrant abstracts
                   to serene landscapes, including our stunning pieces inspired
-                  by{" "}
-                  <span className="rounded-sm inline-block bg-blue-500 text-white px-1">
-                    Van Gogh's
-                  </span>{" "}
-                  "Starry Night," each artwork is a unique expression of
-                  creativity. Discover the enchanting reimaginings by Fady Emad
-                  that capture the beauty and emotion of this timeless
-                  masterpiece, perfect for transforming your space.
+                  by Van Gogh's "Starry Night," each artwork is a unique
+                  expression of creativity. Discover the enchanting reimaginings
+                  by Fady Emad that capture the beauty and emotion of this
+                  timeless masterpiece, perfect for transforming your space.
                 </span>
                 <img
                   className="max-w-[564px] lg:hidden rounded-2xl "
@@ -221,14 +218,10 @@ export default function Home() {
                 <span className="text-start ">
                   Where every brushstroke tells a story. From vibrant abstracts
                   to serene landscapes, including our stunning pieces inspired
-                  by{" "}
-                  <span className="rounded-sm inline-block bg-blue-500 text-white px-1">
-                    Van Gogh's
-                  </span>{" "}
-                  "Starry Night," each artwork is a unique expression of
-                  creativity. Discover the enchanting reimaginings by Fady Emad
-                  that capture the beauty and emotion of this timeless
-                  masterpiece, perfect for transforming your space.
+                  by Van Gogh's "Starry Night," each artwork is a unique
+                  expression of creativity. Discover the enchanting reimaginings
+                  by Fady Emad that capture the beauty and emotion of this
+                  timeless masterpiece, perfect for transforming your space.
                 </span>
                 <img
                   className="max-w-[564px] lg:hidden rounded-2xl "
@@ -244,14 +237,10 @@ export default function Home() {
                 <span className="text-start ">
                   Where every brushstroke tells a story. From vibrant abstracts
                   to serene landscapes, including our stunning pieces inspired
-                  by{" "}
-                  <span className="rounded-sm inline-block bg-blue-500 text-white px-1">
-                    Van Gogh's
-                  </span>{" "}
-                  "Starry Night," each artwork is a unique expression of
-                  creativity. Discover the enchanting reimaginings by Fady Emad
-                  that capture the beauty and emotion of this timeless
-                  masterpiece, perfect for transforming your space.
+                  by Van Gogh's "Starry Night," each artwork is a unique
+                  expression of creativity. Discover the enchanting reimaginings
+                  by Fady Emad that capture the beauty and emotion of this
+                  timeless masterpiece, perfect for transforming your space.
                 </span>
                 <img
                   className="max-w-[564px] lg:hidden rounded-2xl "
@@ -266,7 +255,7 @@ export default function Home() {
       {/* end section 3 */}
 
       {/* section 4 */}
-
+      <section className="my-52"></section>
       {/* <section className="my-20">
         <h1 className="text-5xl text-center tracking-tighter mb-9">
           The Art We Sell

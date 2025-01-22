@@ -10,7 +10,7 @@ import { Icons } from "@/components/icons";
 import { login } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -21,7 +21,7 @@ export default function LoginPage() {
   // const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { toast } = useToast();
-  const router = useRouter();
+  // const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -32,7 +32,8 @@ export default function LoginPage() {
       if (response.success) {
         // Handle successful login, e.g., redirect to a different page
         // console.log("Login successful:", response.data);
-        router.push('/show/all');
+        window.location.href = '/show/all';
+        // router.push('/show/all');
       } else {
         // Display error message
         toast({

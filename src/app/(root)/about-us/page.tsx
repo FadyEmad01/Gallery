@@ -190,7 +190,7 @@ const page = () => {
                   />
                 </CursorFirst>
               </div>
-              <div className="col-span-1">
+              {/* <div className="col-span-1">
                 <CursorFirst>
                   <img
                     src="https://i.pinimg.com/236x/03/a3/47/03a34704e435c10e71514364ac4e5a4f.jpg"
@@ -198,8 +198,8 @@ const page = () => {
                     alt="Fady image"
                   />
                 </CursorFirst>
-              </div>
-              <div className="col-span-1">
+              </div> */}
+              {/* <div className="col-span-1">
                 <div className="w-full aspect-square rounded-2xl flex justify-center items-center flex-col gap-y-2 bg-muted border-2">
                   <Spotlight className="from-zinc-600 via-zinc-400 to-zinc-200" />
                   <div className="relative z-50 sm:w-24 w-14 aspect-square rounded-full bg-white flex justify-center items-center">
@@ -209,7 +209,7 @@ const page = () => {
                     Join us
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

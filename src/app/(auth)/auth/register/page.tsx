@@ -10,7 +10,7 @@ import { Icons } from "@/components/icons";
 import { useToast } from "@/hooks/use-toast";
 import { register } from "@/lib/api";
 import { Toaster } from "@/components/ui/toaster";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 
 export default function RegisterPage() {
@@ -23,7 +23,7 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState<string>("");
   // const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { toast } = useToast();
-  const router = useRouter();
+  // const router = useRouter();
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
@@ -37,7 +37,8 @@ export default function RegisterPage() {
       });
       if (response.success) {
         // Handle successful login, e.g., redirect to a different page`
-        router.push('/profile');
+        window.location.href = '/profile';
+        // router.push('/profile');
       } else {
         toast({
           variant: "destructive",
