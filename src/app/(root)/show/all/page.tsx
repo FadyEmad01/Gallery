@@ -2,7 +2,7 @@
 import { Container } from "@/components/Container";
 import { MasonryCard } from "@/components/MasonryCard";
 import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 import { getAllPosts } from "@/lib/api";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,7 +31,7 @@ export default function Home() {
   const [posts, setPosts] = useState<PostData[]>([]);
   // const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -40,11 +40,12 @@ export default function Home() {
         setPosts(response.data?.boards || []); // Adjust according to the structure of `response.data`
       } else {
         // setError(response.message || "Failed to fetch posts");
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "An unexpected error occurred." + response.message,
-        });
+        // toast({
+        //   variant: "destructive",
+        //   title: "Error",
+        //   description: "An unexpected error occurred." + response.message,
+        // });
+        console.log("Posts error: " + response.message);
       }
       setLoading(false); // Set loading to false
     };
