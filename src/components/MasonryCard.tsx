@@ -102,8 +102,8 @@ export const MasonryCard = (props: MansoryProps) => {
             <DropdownMenuTrigger asChild>
               <div
                 className={cn(
-                  "absolute top-2 ease-in-out duration-100",
-                  isDropdownOpen ? "right-2" : "-right-10 group-hover:right-2"
+                  "absolute top-2 ease-in-out duration-100 right-2",
+                  isDropdownOpen ? "lg:right-2" : "lg:-right-10 lg:group-hover:right-2"
                 )}
               >
                 <button className="bg-white/90 rounded-full p-2 ">
