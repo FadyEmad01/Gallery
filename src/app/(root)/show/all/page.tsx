@@ -1,7 +1,7 @@
 "use client";
 import { Container } from "@/components/Container";
 import { MasonryCard } from "@/components/MasonryCard";
-import { Toaster } from "@/components/ui/toaster";
+// import { Toaster } from "@/components/ui/toaster";
 // import { useToast } from "@/hooks/use-toast";
 import { getAllPosts } from "@/lib/api";
 import { LoaderCircle } from "lucide-react";
@@ -139,7 +139,7 @@ export default function Home() {
   return (
     <>
       {/* <Navbar/> */}
-      <Toaster />
+      {/* <Toaster /> */}
       <Container>
         {loading ? (
           <LoaderCircle className="mx-auto animate-spin size-10 mt-9" />
